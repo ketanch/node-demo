@@ -1,0 +1,51 @@
+<html>
+<head>
+<title>
+Node Demo
+</title>
+<script>
+function get_data(){
+	return {"x":document.getElementById("xcoordi").value, "y":document.getElementById("ycoordi").value};
+}
+function get() {
+	fetch("http://127.0.0.1:12345/getCoordinates", {
+		headers: {
+			"Content-Type" : "application/json"
+		},
+		body : JSON.stringify(get_data()),
+		method : 'POST'
+	}).then((response) => {
+		if (response.status == 200)
+			return response.json();
+		else 
+			return {}
+	}).then((data) => {
+		alert("Nearest Coordinate : (" + data.x+ "," + data.y + ")");
+	});
+}
+function submit() {
+	fetch("http://127.0.0.1:12345/submitCoordinates", {
+		headers: {
+			"Content-Type" : "application/json"
+		},
+		body : JSON.stringify(get_data()),
+		method : 'POST'
+	}).then((response) => {
+		if (response.status == 200)
+			alert("Coordinate Registered");
+	});
+}
+</script>
+</head>
+<body>
+	<h1>Get or Submit Coordinates</h1>
+	<div>
+		<span>x</span><input type="text" name="x-coordi" id="xcoordi" />
+	</div>
+	<div>
+		<span>y</span><input type="text" name="y-coordi" id="ycoordi" />
+	</div>
+	<input type="button" value="Get" onclick="get()" />
+	<input type="button" value="Submit" onclick="submit()" />
+</body>
+</html>
